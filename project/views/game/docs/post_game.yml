@@ -1,0 +1,34 @@
+summary: Create a new game
+parameters:
+
+- in: body
+  name: game
+  description: Game to create.
+  schema:
+    type: object
+    required:
+      - name
+      - category_id
+    properties:
+      name:
+        type: string
+      category_id:
+        type: integer
+responses:
+  200:
+    description: OK
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+        game:
+          type: object
+          properties:
+            name:
+              type: string
+            category_id:
+              type: integer
+
+  400:
+    description: Validation error

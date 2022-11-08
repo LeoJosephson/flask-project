@@ -1,0 +1,25 @@
+summary: Get a category by id
+parameters:
+
+- in: path
+  name: id
+  description: Category id.
+  type: integer
+  required: true
+
+responses:
+  200:
+    description: OK
+    schema:
+      type: object
+      properties:
+        category:
+          type: object
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+
+  404:
+    description: Category not found

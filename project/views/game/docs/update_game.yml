@@ -1,0 +1,34 @@
+summary: Updates an existing game
+parameters:
+- in: path
+  name: id
+  description: game id to update
+  required: true
+  type: integer
+- in: body
+  name: game
+  description: Game to update.
+  schema:
+    type: object
+    properties:
+      name:
+        type: string
+      category_id:
+        type: integer
+responses:
+  200:
+    description: OK
+    schema:
+      type: object
+      properties:
+        game:
+          type: object
+          properties:
+            name:
+              type: string
+            category_id:
+              type: integer
+  404:
+    description: Game not Found
+  400:
+    description: ValidationError

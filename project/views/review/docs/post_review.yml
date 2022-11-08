@@ -1,0 +1,53 @@
+summary: Create a new review
+parameters:
+
+- in: body
+  name: review
+  description: Review to create.
+  schema:
+    type: object
+    required:
+      - name
+      - description
+      - playtime
+      - rating
+      - user_id
+      - game_id
+    properties:
+      name:
+        type: string
+        minLength: 1
+        maxLength: 64
+      description:
+        type: string
+      playtime:
+        type: number
+        minimum: 0.1
+      rating:
+        type: number
+        minimum: 0
+        maximum: 10
+      user_id:
+        type: integer
+      game_id:
+        type: integer
+responses:
+  200:
+    description: OK
+    schema:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        playtime:
+          type: number
+        rating:
+          type: number
+        user_id:
+          type: integer
+        game_id:
+          type: integer      
+  400:
+    description: Validation error

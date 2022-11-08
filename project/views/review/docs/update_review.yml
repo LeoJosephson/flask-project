@@ -1,0 +1,45 @@
+summary: Updates an existing review
+parameters:
+- in: path
+  name: id
+  description: game review to update
+  required: true
+  type: integer
+- in: body
+  name: review
+  description: Review to update.
+  schema:
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      playtime:
+        type: number
+      rating:
+        type: number
+      user_id:
+        type: integer
+      game_id:
+        type: integer
+responses:
+  200:
+    description: OK
+    schema:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        playtime:
+          type: number
+        rating:
+          type: number
+        user_id:
+          type: integer
+        game_id:
+          type: integer
+  404:
+    description: Review not Found

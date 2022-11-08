@@ -1,0 +1,30 @@
+summary: Create a new user
+parameters:
+
+- in: body
+  name: User
+  description: User to create.
+  schema:
+    type: object
+    required:
+      - username
+      - email
+      - password
+    properties:
+      username:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+responses:
+  200:
+    description: OK
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+
+  500:
+    description: Validation error

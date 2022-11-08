@@ -1,0 +1,18 @@
+summary: get all categories
+responses:
+  200:
+    description: OK
+    schema:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Category name
+              description:
+                type: string
+                description: Category description

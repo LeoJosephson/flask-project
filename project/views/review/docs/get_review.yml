@@ -1,0 +1,32 @@
+summary: Get a review by id
+parameters:
+
+- in: path
+  name: id
+  description: review id
+  type: integer
+  required: true
+
+responses:
+  200:
+    description: OK
+    schema:
+      type: object
+      properties:
+        review:
+          type: object
+          properties:
+            playtime:
+              type: number
+            name:
+              type: string
+            user_id:
+              type: integer
+            game_id:
+              type: integer
+            description:
+              type: string
+            rating:
+              type: number
+  404:
+    description: Review not found
