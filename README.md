@@ -48,4 +48,9 @@ python -m pytest
 ```
 python -m pytest --cov-report html --cov
 ```
+### Access api documentation
+The default endpoint is apidocs  
+  
+Example: http://127.0.0.1:5000/apidocs/
+ 
 
