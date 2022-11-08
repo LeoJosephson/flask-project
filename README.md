@@ -48,6 +48,8 @@ python -m pytest
 ```
 python -m pytest --cov-report html --cov
 ```
+The html coverage is located at htmlcov/index.html
+
 ### Access api documentation
 The default endpoint is apidocs  
   
