@@ -25,7 +25,9 @@ In the config.py file, set the `pg_user` (postgre username), `pg_pwd` (postgre p
 
 ### Create database entities
 make sure you are in the project folder and set the FLASK_APP environment variable -> ```set FLASK_APP=app.py```
-```flask shell``` to shart flask shell
+  
+  
+```flask shell``` to start flask shell
 ```python
 from extensions import db
 from models.category import Category
