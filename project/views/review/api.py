@@ -62,12 +62,12 @@ def update_review(id):
     content = request.get_json()
 
     review_update = Review(
-    name = content.get("name", review.name),
-    description = content.get("description", review.description),
-    playtime = content.get("playtime", review.playtime),
-    rating = content.get("rating", review.rating),
-    game_id = content.get("game_id", review.game_id),
-    user_id = content.get("user_id", review.user_id)
+        name = content.get("name", review.name),
+        description = content.get("description", review.description),
+        playtime = content.get("playtime", review.playtime),
+        rating = content.get("rating", review.rating),
+        game_id = content.get("game_id", review.game_id),
+        user_id = content.get("user_id", review.user_id)
     )
 
     try:
