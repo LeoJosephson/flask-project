@@ -35,10 +35,10 @@ def test_post_category_with_invalid_fields(app_with_data):
     })
     assert response.status_code == 400
     assert db.session.query(Category).filter(Category.description=="testing_post_invalid").first() == None
+
 def test_post_category_without_fields(app_with_db):
     response = app_with_db.post("/categories/")
     assert response.status_code == 400
-
 
 def test_get_all_categories(app_with_data):
     name = db.session.query(Category).first().name
@@ -50,9 +50,8 @@ def test_get_all_categories(app_with_data):
 def test_get_category_with_valid_id(app_with_data):
     category = db.session.query(Category).first()
     response = app_with_data.get(f"/categories/{category.id}")
-    res = response.get_json()
     assert response.status_code == 200
-    assert res["category"]["name"] == category.name
+    assert response.get_json()["category"]["name"] == category.name
 
 def test_get_category_with_invalid_id(app_with_db):
     response = app_with_db.get(f"/categories/1")

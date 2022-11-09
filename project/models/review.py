@@ -26,14 +26,13 @@ class Review(db.Model):
 
     def to_json(self):
         return {
-        "id":self.id,
-        "name":self.name,
-        "description":self.description,
-        "playtime": self.playtime,
-        "rating": self.rating,
-        "game_id": self.game_id,
-        "user_id": self.user_id
-
+            "id":self.id,
+            "name":self.name,
+            "description":self.description,
+            "playtime": self.playtime,
+            "rating": self.rating,
+            "game_id": self.game_id,
+            "user_id": self.user_id
         }
 
 class ReviewSchema(ma.SQLAlchemySchema):

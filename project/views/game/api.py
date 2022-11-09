@@ -88,6 +88,7 @@ def game_update(id):
 
         return jsonify({"game": result})
     except ValidationError as e:
+        logging.error("Game update validation error")
         return jsonify(createValidationErrorMessage(e)), 400
 
 
