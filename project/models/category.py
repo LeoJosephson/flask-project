@@ -1,6 +1,5 @@
 from extensions import db, ma
 from marshmallow import fields, validates_schema, ValidationError, EXCLUDE
-from marshmallow.validate import Range, Length   
 
 class Category(db.Model):
     __tablename__ = 'categories'

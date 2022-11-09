@@ -9,7 +9,7 @@ from flasgger import swag_from
 
 
 reviews = Blueprint('reviews', __name__, url_prefix='/reviews')
-
+review_schema = ReviewSchema()
 path = os.path.realpath(os.path.dirname(__file__))
 
 @reviews.route('/', methods=['POST'])
@@ -26,17 +26,14 @@ def create_review():
     user_id = content.get("user_id")
     new_review = Review(name=name, description=description, playtime=playtime, rating=rating, game_id=game_id, user_id=user_id)
 
-    review_schema = ReviewSchema()
-
     try:
-        review_schema.load(new_review.to_json()) # Validates the input
-
+        result = review_schema.load(new_review.to_json()) # Validates the input
         db.session.add(new_review)
         db.session.commit()
 
         return jsonify({
             "message": "new review inserted",
-            "review": review_schema.dump(new_review)
+            "review": result
             })
     except ValidationError as e:
         return jsonify(createValidationErrorMessage(e)), 400
@@ -46,20 +43,16 @@ def create_review():
 def get_reviews():
     """Returns all reviews in json format."""
     reviews = Review.query.all()
-
-    game_schema = ReviewSchema(many=True)
-    resp = game_schema.dump(reviews)
+    game_schema_m = ReviewSchema(many=True)
 
     return jsonify(
-        {"Reviews":resp}
+        {"Reviews":game_schema_m.dump(reviews)}
         ), 200
-
 
 @reviews.route('/<id>', methods=['GET'])
 @swag_from(os.path.join(path, 'docs', 'get_review.yml'))
 def get_review_by_id(id):
     review = Review.query.get_or_404(id) 
-    review_schema = ReviewSchema()
     return jsonify({"review": review_schema.dump(review)})
 
 @reviews.route('/<id>', methods=['PUT'])
@@ -68,29 +61,23 @@ def update_review(id):
     review = Review.query.get_or_404(id)
     content = request.get_json()
 
-    name = content.get("name", review.name)
-    description = content.get("description", review.description)
-    playtime = content.get("playtime", review.playtime)
-    rating = content.get("rating", review.rating)
-    game_id = content.get("game_id", review.game_id)
+    review_update = Review(
+    name = content.get("name", review.name),
+    description = content.get("description", review.description),
+    playtime = content.get("playtime", review.playtime),
+    rating = content.get("rating", review.rating),
+    game_id = content.get("game_id", review.game_id),
     user_id = content.get("user_id", review.user_id)
-    
-    review_schema = ReviewSchema()
+    )
+
     try:
-        result = review_schema.load({
-            "name": name,
-            "description": description,
-            "playtime": playtime,
-            "rating": rating,
-            "game_id": game_id,
-            "user_id": user_id
-        })
-        review.name = name
-        review.description = description
-        review.playtime = playtime
-        review.rating = rating
-        review.game_id = game_id
-        review.user_id = user_id
+        result = review_schema.load(review_update.to_json())
+        review.name = review_update.name
+        review.description = review_update.description
+        review.playtime = review_update.playtime
+        review.rating = review_update.rating
+        review.game_id = review_update.game_id
+        review.user_id = review_update.user_id
         db.session.commit()
 
         return jsonify({"review": result})

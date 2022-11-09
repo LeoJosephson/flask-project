@@ -12,6 +12,7 @@ logging_format = '%(asctime)s | %(name)s | %(levelname)s | %(message)s'
 logging.basicConfig(format=logging_format, level=logging.DEBUG, datefmt='%d-%b-%y %H:%M:%S')
 
 path = os.path.realpath(os.path.dirname(__file__))
+game_schema = GameSchema()
 
 @games.route('/', methods=['POST'])
 @swag_from(os.path.join(path, 'docs', 'post_game.yml'))
@@ -23,7 +24,6 @@ def create_game():
     category_id = content.get("category_id")
     new_game = Game(name=name, category_id=category_id)
 
-    game_schema = GameSchema()
     try:
         game_schema.load(new_game.to_json()) # Validates the input
 
@@ -42,11 +42,10 @@ def create_game():
 def get_games():
     games = Game.query.all()
 
-    game_schema = GameSchema(many=True)
-    resp = game_schema.dump(games)
+    game_schema_m = GameSchema(many=True)
 
     return jsonify(
-        {"games":resp}
+        {"games": game_schema_m.dump(games)}
         ), 200
     
 
@@ -54,8 +53,7 @@ def get_games():
 @swag_from(os.path.join(path, 'docs', 'get_game.yml'))
 def get_game_by_id(id):
     """Returns a game that has the same input id of <id> in json format"""
-    game = Game.query.get_or_404(id) 
-    game_schema = GameSchema()
+    game = Game.query.get_or_404(id)
     return jsonify({"game": game_schema.dump(game)})
 
 @games.route('/<id>', methods=['DELETE'])
@@ -79,8 +77,6 @@ def game_update(id):
 
     name = content.get("name", game.name)
     category_id = content.get("category_id", game.category_id)
-
-    game_schema = GameSchema()
     try:
         result = game_schema.load(
             {"name": name,

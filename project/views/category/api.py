@@ -13,7 +13,7 @@ categories = Blueprint('categories', __name__, url_prefix='/categories')
 logging_format = '%(asctime)s | %(name)s | %(levelname)s | %(message)s'
 logging.basicConfig(format=logging_format, level=logging.DEBUG, datefmt='%d-%b-%y %H:%M:%S')
 
-
+category_schema = CategorySchema()
 path = os.path.realpath(os.path.dirname(__file__))
 
 @categories.route('/', methods=['POST'])
@@ -21,13 +21,11 @@ path = os.path.realpath(os.path.dirname(__file__))
 def create_category():
     """ Create a new category """
     content = request.get_json()
+    new_category = Category(
+        name = content.get("name"),
+        description = content.get("description")
+    )
 
-    name = content.get("name")
-    description = content.get("description")
-    new_category = Category(name=name, description=description)
-
-
-    category_schema = CategorySchema()
     try:
         category_schema.load(new_category.to_json()) # Validates the input
 
@@ -45,15 +43,13 @@ def create_category():
 @categories.route('/', methods=['GET'])
 @swag_from(os.path.join(path, 'docs', 'get_categories.yml'))
 def get_categories():
-
     """Returns all categories in json format."""
     categories = Category.query.all()
 
-    category_schema = CategorySchema(many=True)
-    resp = category_schema.dump(categories)
+    category_schema_m = CategorySchema(many=True)
 
     return jsonify(
-        {"categories":resp}
+        {"categories":category_schema_m.dump(categories)}
         ), 200
 
 @categories.route('/<id>', methods=['GET'])
@@ -61,7 +57,6 @@ def get_categories():
 def get_category_by_id(id):
     """Returns a game that has the same input id of <id> in json format"""
     category = Category.query.get_or_404(id) 
-    category_schema = CategorySchema()
     return jsonify({"category": category_schema.dump(category)})
 
 @categories.route('/<id>', methods=['DELETE'])
@@ -86,9 +81,8 @@ def category_update(id):
     name = content.get("name", category.name)
     description = content.get("description", category.description)
 
-    game_schema = CategorySchema()
     try:
-        result = game_schema.load({
+        result = category_schema.load({
             "name": name,
             "description": description
         })
