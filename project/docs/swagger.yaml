@@ -56,9 +56,9 @@ paths:
             rating:
               $ref: '#definitions/Review/properties/rating'
             user_id:
-              type: integer
+              $ref: '#definitions/Review/properties/user_id'
             game_id:
-              type: integer
+              $ref: '#definitions/Review/properties/game_id'
           required:
             - name
             - description
@@ -155,7 +155,7 @@ paths:
             name:
               $ref: '#definitions/Game/properties/name'
             category_id:
-              type: integer
+              type: '#definitions/Game/properties/category_id'
       responses:
         200:
           description: OK
