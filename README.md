@@ -56,5 +56,3 @@ The html coverage is located at htmlcov/index.html
 The default endpoint is apidocs  
   
 Example: http://127.0.0.1:5000/apidocs/
- 
-
