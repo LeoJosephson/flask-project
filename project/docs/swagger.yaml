@@ -1,0 +1,466 @@
+swagger: '2.0'
+
+################################################################################
+#                              API Information                                 #
+################################################################################
+info:
+  version: '1.0.0'
+  title: Game Api
+  description: This is a game Api created to study API's
+schemes:
+  - http
+# Format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# Format of the responses to the client (Accepts)
+produces:
+  - application/json
+
+################################################################################
+#                                    Paths                                     #
+################################################################################
+paths:
+  /reviews/:
+    get:
+      tags:
+        - Reviews
+      summary: get all reviews
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              reviews:
+                type: array
+                items:
+                  $ref: '#definitions/Review'
+    post:
+      summary: Create a new review
+      tags:
+        - Reviews
+      parameters:
+
+      - in: body
+        name: review
+        description: Review to create.
+        schema:
+          type: object
+          properties:
+            name:
+              $ref: '#definitions/Review/properties/name'
+            description:
+              $ref: '#definitions/Review/properties/description'
+            playtime:
+              $ref: '#definitions/Review/properties/playtime'
+            rating:
+              $ref: '#definitions/Review/properties/rating'
+            user_id:
+              type: integer
+            game_id:
+              type: integer
+          required:
+            - name
+            - description
+            - playtime
+            - rating
+            - user_id
+            - game_id
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#definitions/Review' 
+        400:
+          description: Validation error
+
+
+  /reviews/{reviewId}:
+    parameters:
+    - in: path
+      name: reviewId
+      description: review id
+      type: integer
+      required: true
+    get:
+      summary: Get a review by id
+      tags:
+        - Reviews
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              review:
+                $ref: '#definitions/Review'
+        404:
+          description: Review not found
+    put:
+      summary: Updates an existing review
+      tags:
+        - Reviews
+      parameters:
+      - in: body
+        name: review
+        description: Review to update.
+        schema:
+          $ref: '#definitions/Review'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#definitions/Review'
+        404:
+          description: Review not Found
+    delete:
+      summary: Delete a review
+      tags:
+        - Reviews
+      responses:
+        200:
+          description: OK
+        404:
+          description: Review not Found
+  /games/:
+    get:
+      summary: get all games
+      tags:
+        - Games
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              games:
+                type: array
+                items:
+                  $ref: '#definitions/Game'
+    post:
+      tags:
+        - Games
+      summary: Create a new game
+      parameters:
+
+      - in: body
+        name: game
+        description: Game to create.
+        schema:
+          type: object
+          required:
+            - name
+            - category_id
+          properties:
+            name:
+              $ref: '#definitions/Game/properties/name'
+            category_id:
+              type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              game:
+                $ref: '#definitions/Game'
+
+        400:
+          description: Validation error
+  /games/{gameId}:
+    get:
+      summary: Get a game by id
+      tags:
+        - Games
+      parameters:
+
+      - in: path
+        name: gameId
+        description: Game id.
+        type: integer
+        required: true
+
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              game:
+                $ref: "#definitions/Game"
+        404:
+          description: Game not found
+    put:
+      summary: Updates an existing game
+      tags:
+        - Games
+      parameters:
+      - in: path
+        name: gameId
+        description: game id to update
+        required: true
+        type: integer
+      - in: body
+        name: game
+        description: Game to update.
+        schema:
+          $ref: '#definitions/Game'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              game:
+                $ref: '#definitions/Game'
+        404:
+          description: Game not Found
+        400:
+          description: ValidationError
+    delete:
+      summary: Delete a game
+      tags:
+        - Games
+      parameters:
+
+      - in: path
+        name: gameId
+        description: Game id to delete
+        type: integer
+        required: true
+      responses:
+        200:
+          description: OK
+        404:
+          description: Game not Found
+  /categories/:
+    get:
+      summary: get all categories
+      tags:
+        - Categories
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              categories:
+                type: array
+                items:
+                  $ref: "#definitions/Category"
+    post:
+      summary: Create a new category
+      tags:
+        - Categories
+      parameters:
+      - in: body
+        name: category
+        description: Category to create.
+        schema:
+          type: object
+          required:
+            - name
+            - description
+          properties:
+            name:
+              $ref: "#definitions/Category/properties/name"
+            description:
+              $ref: "#definitions/Category/properties/description"
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              category:
+                $ref: "#definitions/Category"
+        400:
+          description: Validation error
+  /categories/{categoryId}:
+    get:
+      summary: Get a category by id
+      tags:
+        - Categories
+      parameters:
+
+      - in: path
+        name: categoryId
+        description: Category id.
+        type: integer
+        required: true
+
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              category:
+                $ref: '#definitions/Category'
+        404:
+          description: Category not found
+    put:
+      summary: Updates an existing category
+      tags:
+        - Categories
+      parameters:
+      - in: path
+        name: categoryId
+        description: category id to update
+        required: true
+        type: integer
+      - in: body
+        name: category
+        description:  Category to update.
+        schema:
+          $ref: '#definitions/Category'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              category:
+                $ref: '#definitions/Category'
+        404:
+          description: category not found
+        400:
+          description: validation Error
+    delete:
+      summary: Delete a category
+      tags:
+        - Categories
+      parameters:
+
+      - in: path
+        name: categoryId
+        description: Category id to delete
+        type: integer
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+
+        404:
+          description: Category not Found
+  /users/:
+    post:
+      summary: Create a new user
+      tags:
+        - Users
+      parameters:
+
+      - in: body
+        name: User
+        description: User to create.
+        schema:
+          type: object
+          required:
+            - username
+            - email
+            - password
+          properties:
+            username:
+              $ref: "#definitions/User/properties/username"
+            email:
+              $ref: "#definitions/User/properties/email"
+            password:
+              $ref: "#definitions/User/properties/password"
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+
+        400:
+          description: Validation error
+
+
+
+      
+definitions:
+  Review:
+    type: object
+    properties:
+      playtime:
+        type: number
+        description: playtime of user
+        minimum: 0.1
+      name:
+        type: string
+        description: Review name.
+        minLength: 1
+        maxLength: 64
+      user_id:
+        type: integer
+        description: Review author id
+      game_id:
+        type: integer
+        description: Game id of the review
+      description:
+        type: string
+        description: Review description.  
+      rating:
+        type: number
+        description: review rating
+        minimum: 0
+        maximum: 10
+    example:
+      playtime: 100
+      rating: 8.4
+      description: "Review description"
+      game_id: 1
+      user_id: 1
+      name: "Review name"
+  Game:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Game name
+        minLength: 1
+        maxLength: 64
+      category_id:
+        type: integer
+        description: Category id
+    example:
+      name: "League of Legends"
+      category_id: 1
+  Category:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Category name
+        minLength: 1
+        maxLength: 64
+      description:
+        type: string
+        description: Category description
+  User:
+    type: object
+    properties:
+      username:
+        type: string
+        minLength: 1
+        maxLength: 100
+      email:
+        type: string
+        maxLength: 64
+      password:
+        type: string
+        minLength: 7
+        maxLength: 50
+

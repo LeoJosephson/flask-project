@@ -4,7 +4,6 @@ from ..utils import createValidationErrorMessage
 import logging
 from models.game import Game, GameSchema
 from extensions import db
-from flasgger import swag_from
 import os
 games = Blueprint('games', __name__, url_prefix='/games')
 
@@ -15,7 +14,6 @@ path = os.path.realpath(os.path.dirname(__file__))
 game_schema = GameSchema()
 
 @games.route('/', methods=['POST'])
-@swag_from(os.path.join(path, 'docs', 'post_game.yml'))
 def create_game():
     """ Create a new game """
     content = request.get_json()
@@ -33,12 +31,11 @@ def create_game():
         return jsonify({
             "message": "new game inserted",
             "game": game_schema.dump(new_game)
-            }, 200)
+            }),200
     except ValidationError as e:
         return jsonify(createValidationErrorMessage(e)), 400
     
 @games.route('/', methods=['GET'])
-@swag_from(os.path.join(path, 'docs', 'get_games.yml'))
 def get_games():
     games = Game.query.all()
 
@@ -50,14 +47,12 @@ def get_games():
     
 
 @games.route('/<id>', methods=['GET'])
-@swag_from(os.path.join(path, 'docs', 'get_game.yml'))
 def get_game_by_id(id):
     """Returns a game that has the same input id of <id> in json format"""
     game = Game.query.get_or_404(id)
     return jsonify({"game": game_schema.dump(game)})
 
 @games.route('/<id>', methods=['DELETE'])
-@swag_from(os.path.join(path, 'docs', 'delete_game.yml'))
 def delete_game_by_id(id):
     games = db.session.query(Game).filter(Game.id == id).delete()
     if (games == 1):
@@ -69,7 +64,6 @@ def delete_game_by_id(id):
         return abort(404)
     
 @games.route('/<id>', methods=['PUT'])
-@swag_from(os.path.join(path, 'docs', 'update_game.yml'))
 def game_update(id):
 
     game = Game.query.get_or_404(id)

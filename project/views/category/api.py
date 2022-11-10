@@ -3,7 +3,6 @@ from marshmallow import ValidationError
 import logging
 from models.category import CategorySchema, Category
 from extensions import db
-from flasgger import swag_from
 from ..utils import createValidationErrorMessage
 import os
 
@@ -17,7 +16,6 @@ category_schema = CategorySchema()
 path = os.path.realpath(os.path.dirname(__file__))
 
 @categories.route('/', methods=['POST'])
-@swag_from(os.path.join(path, 'docs', 'post_category.yml'))
 def create_category():
     """ Create a new category """
     content = request.get_json()
@@ -41,7 +39,6 @@ def create_category():
 
     
 @categories.route('/', methods=['GET'])
-@swag_from(os.path.join(path, 'docs', 'get_categories.yml'))
 def get_categories():
     """Returns all categories in json format."""
     categories = Category.query.all()
@@ -53,14 +50,12 @@ def get_categories():
         ), 200
 
 @categories.route('/<id>', methods=['GET'])
-@swag_from(os.path.join(path, 'docs', 'get_category.yml'))
 def get_category_by_id(id):
     """Returns a game that has the same input id of <id> in json format"""
     category = Category.query.get_or_404(id) 
     return jsonify({"category": category_schema.dump(category)})
 
 @categories.route('/<id>', methods=['DELETE'])
-@swag_from(os.path.join(path, 'docs', 'delete_category.yml'))
 def delete_category_by_id(id):
     """ Delete a game that has the same input id of <id> """
     category = db.session.query(Category).filter(Category.id == id).delete()
@@ -73,7 +68,6 @@ def delete_category_by_id(id):
         return abort(404)
     
 @categories.route('/<id>', methods=['PUT'])
-@swag_from(os.path.join(path, 'docs', 'update_category.yml'))
 def category_update(id):
     category = Category.query.get_or_404(id)
     content = request.get_json()

@@ -4,7 +4,6 @@ from extensions import db
 from marshmallow import ValidationError
 from ..utils import createValidationErrorMessage
 import os
-from flasgger import swag_from
 
 
 users = Blueprint('users', __name__, url_prefix='/users')
@@ -12,7 +11,6 @@ users = Blueprint('users', __name__, url_prefix='/users')
 path = os.path.realpath(os.path.dirname(__file__))
 
 @users.route('/', methods=['POST'])
-@swag_from(os.path.join(path, 'docs', 'post_user.yml'))
 def create_user():
     content = request.get_json()
 

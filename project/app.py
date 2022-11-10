@@ -34,7 +34,7 @@ swagger_config = {
 def create_app(config_class=DevelopmentConfig):
 
     app = Flask(__name__)
-    swagger = Swagger(app, config=swagger_config, merge=True)
+    swagger = Swagger(app, config=swagger_config, merge=True, template_file = 'docs/swagger.yaml')
     app.config.from_object(config_class)
     
     app.register_blueprint(games)

@@ -5,7 +5,7 @@ from models.review import ReviewSchema, Review
 from extensions import db
 from ..utils import createValidationErrorMessage
 import os
-from flasgger import swag_from
+
 
 
 reviews = Blueprint('reviews', __name__, url_prefix='/reviews')
@@ -13,7 +13,6 @@ review_schema = ReviewSchema()
 path = os.path.realpath(os.path.dirname(__file__))
 
 @reviews.route('/', methods=['POST'])
-@swag_from(os.path.join(path, 'docs', 'post_review.yml'))
 def create_review():
     """ Create a new review """
     content = request.get_json()
@@ -39,7 +38,7 @@ def create_review():
         return jsonify(createValidationErrorMessage(e)), 400
 
 @reviews.route('/', methods=['GET'])
-@swag_from(os.path.join(path, 'docs', 'get_reviews.yml'))
+
 def get_reviews():
     """Returns all reviews in json format."""
     reviews = Review.query.all()
@@ -50,13 +49,11 @@ def get_reviews():
         ), 200
 
 @reviews.route('/<id>', methods=['GET'])
-@swag_from(os.path.join(path, 'docs', 'get_review.yml'))
 def get_review_by_id(id):
     review = Review.query.get_or_404(id) 
     return jsonify({"review": review_schema.dump(review)})
 
 @reviews.route('/<id>', methods=['PUT'])
-@swag_from(os.path.join(path, 'docs', 'update_review.yml'))
 def update_review(id):
     review = Review.query.get_or_404(id)
     content = request.get_json()
@@ -83,8 +80,8 @@ def update_review(id):
         return jsonify({"review": result})
     except ValidationError as e:
         return jsonify(createValidationErrorMessage(e)), 400
+
 @reviews.route('/<id>', methods=['DELETE'])
-@swag_from(os.path.join(path, 'docs', 'delete_review.yml'))
 def delete_review_by_id(id):
     reviews = db.session.query(Review).filter(Review.id == id).delete()
     if (reviews == 1):
