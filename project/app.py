@@ -14,27 +14,12 @@ from config import DevelopmentConfig
 '''
 
 
-swagger_config = {
-    "headers": [
-    ],
-    "title": "Game api",
-    "description": "Api using flask to study",
-    "specs": [
-        {
-            "endpoint": 'APISpecification',
-            "route": '/APISpecification',
-            "rule_filter": lambda rule: True,  # all in
-            "model_filter": lambda tag: True,  # all in
-        }
-    ],
-    "static_url_path": "/flasgger_static",
-    "specs_route": "/apidocs/",
-}
+
 
 def create_app(config_class=DevelopmentConfig):
 
     app = Flask(__name__)
-    swagger = Swagger(app, config=swagger_config, merge=True, template_file = 'docs/swagger.yaml')
+    swagger = Swagger(app, merge=True, template_file = 'docs/swagger.yaml')
     app.config.from_object(config_class)
     
     app.register_blueprint(games)
