@@ -9,13 +9,6 @@ from flasgger import Swagger
 
 from config import DevelopmentConfig
 
-'''pytest
-    pytest coverage
-'''
-
-
-
-
 def create_app(config_class=DevelopmentConfig):
 
     app = Flask(__name__)
@@ -32,5 +25,3 @@ def create_app(config_class=DevelopmentConfig):
     migrate = Migrate(app, db)
  
     return app
-
-    
