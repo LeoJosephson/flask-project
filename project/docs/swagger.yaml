@@ -155,7 +155,7 @@ paths:
             name:
               $ref: '#definitions/Game/properties/name'
             category_id:
-              type: '#definitions/Game/properties/category_id'
+              $ref: '#definitions/Game/properties/category_id'
       responses:
         200:
           description: OK
