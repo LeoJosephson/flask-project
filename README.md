@@ -39,9 +39,7 @@ create a file (.env) in the root of the project with the following variables:
 | HOST               | host               | "localhost"    |
 
 
-FLASK_APP variable must be equal to project/app.py  
-
-if running in a docker container with local Postgresql database add a environment variable DOCKER_HOST="host.docker.internal" in the Dockerfile or in the .env file  
+FLASK_APP variable must be equal to project/app.py   
   
 ### Create database entities
 make sure you are in the project folder
@@ -55,17 +53,24 @@ from models.user import User
 from models.review import Review
 db.create_all()
 ```
-### Run application  
+## Run application  
   
 ```
 flask run 
 ```
-### Run tests
+
+### Run application with docker
+
+```
+docker compose up
+```
+
+## Run tests
 ```
 python -m pytest
 ```
   
-#### Create Html report for test coverage
+### Create Html report for test coverage
 ```
 python -m pytest --cov-report html --cov
 ```
