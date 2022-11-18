@@ -41,7 +41,7 @@ create a file (.env) in the root of the project with the following variables:
 
 FLASK_APP variable must be equal to project/app.py  
 
-if running in a docker running add a environment variable DOCKER_HOST="host.docker.internal" in the Dockerfile or in the .env file  
+if running in a docker container with local Postgresql database add a environment variable DOCKER_HOST="host.docker.internal" in the Dockerfile or in the .env file  
   
 ### Create database entities
 make sure you are in the project folder
