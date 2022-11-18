@@ -14,6 +14,11 @@ This application uses [Flask](https://flask.palletsprojects.com) and [PostgreSQL
 
 ## Quickstart
 
+### Clone repository
+
+```
+git clone https://github.com/LeoJosephson/flask-project.git
+```
 ### Installation
 Make sure you have [python](https://www.python.org/downloads/) installed  
   
@@ -21,10 +26,10 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the add
 ```
 pip install -r requirements.txt
 ```
-In the config.py file, set the `pg_user` (postgre username), `pg_pwd` (postgre password), `pg_port`(postgre port).
 
 ### Create Environment variables
 create a file (.env) in the root of the project with the following variables:
+  
 | Variable name      | Description        | Example        |
 | ------------------ | ------------------ | -------------- |
 | FLASK_APP          | flask application  | project/app.py |
