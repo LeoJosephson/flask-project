@@ -1,9 +1,16 @@
-pg_user = "postgres"
-pg_pwd = "1404"
-pg_port = "5432"
+from dotenv import load_dotenv
+import os
 
-DEV_DB_URL = f"postgresql://{pg_user}:{pg_pwd}@localhost/flaskproject"
-TESTING_DB_URL = f"postgresql://{pg_user}:{pg_pwd}@localhost/flask_project_test"
+load_dotenv()
+pg_user = os.environ['POSTGRES_USER']
+pg_pwd = os.environ['POSTGRES_PASSWORD']
+pg_port = os.environ['POSTGRES_PORT']
+host = os.environ.get("DOCKER_HOST", os.environ["HOST"]) #check if it's running on docker
+
+
+DEV_DB_URL = f"postgresql://{pg_user}:{pg_pwd}@{host}:{pg_port}/flaskproject"
+TESTING_DB_URL = f"postgresql://{pg_user}:{pg_pwd}@{host}:{pg_port}/flask_project_test"
+
 
 class Config(object):
     # SQLAlchemy settings

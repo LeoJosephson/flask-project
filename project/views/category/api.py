@@ -9,9 +9,6 @@ import os
 
 categories = Blueprint('categories', __name__, url_prefix='/categories')
 
-logging_format = '%(asctime)s | %(name)s | %(levelname)s | %(message)s'
-logging.basicConfig(format=logging_format, level=logging.DEBUG, datefmt='%d-%b-%y %H:%M:%S')
-
 category_schema = CategorySchema()
 path = os.path.realpath(os.path.dirname(__file__))
 
@@ -30,11 +27,13 @@ def create_category():
         db.session.add(new_category)
         db.session.commit()
 
+        logging.error("Category created - POST /categories")
         return jsonify({
             "message": "new category inserted",
             "category": category_schema.dump(new_category)
             }, 200)
     except ValidationError as e:
+        logging.error("VALIDATION ERROR - POST /categories")
         return jsonify(createValidationErrorMessage(e)), 400
 
     
@@ -61,10 +60,10 @@ def delete_category_by_id(id):
     category = db.session.query(Category).filter(Category.id == id).delete()
     if (category == 1):
         db.session.commit()
-        logging.info("Successful deletion")
+        logging.info(f"Successful deletion - DELETE /categories/{id}")
         return jsonify({"message": "Successful deletion"}), 200
     else: 
-        logging.error("Category not found")
+        logging.error(f"Category not found - DELETE /categories/{id}")
         return abort(404)
     
 @categories.route('/<id>', methods=['PUT'])
@@ -83,8 +82,9 @@ def category_update(id):
         category.name = name
         category.description = description
         db.session.commit()
-
+        logging.info(f"Successful update - PUT /categories/{id}")
         return jsonify({"category": result})
     except ValidationError as e:
+        logging.error(f"Validation error - PUT /categories/{id}")
         return jsonify(createValidationErrorMessage(e)), 400
     

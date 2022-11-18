@@ -5,10 +5,8 @@ import logging
 from models.game import Game, GameSchema
 from extensions import db
 import os
-games = Blueprint('games', __name__, url_prefix='/games')
 
-logging_format = '%(asctime)s | %(name)s | %(levelname)s | %(message)s'
-logging.basicConfig(format=logging_format, level=logging.DEBUG, datefmt='%d-%b-%y %H:%M:%S')
+games = Blueprint('games', __name__, url_prefix='/games')
 
 path = os.path.realpath(os.path.dirname(__file__))
 game_schema = GameSchema()
@@ -28,11 +26,13 @@ def create_game():
         db.session.add(new_game)
         db.session.commit()
 
+        logging.info("Game created - POST /games")
         return jsonify({
             "message": "new game inserted",
             "game": game_schema.dump(new_game)
             }),200
     except ValidationError as e:
+        logging.error("VALIDATION ERROR - POST /games")
         return jsonify(createValidationErrorMessage(e)), 400
     
 @games.route('/', methods=['GET'])
@@ -57,10 +57,10 @@ def delete_game_by_id(id):
     games = db.session.query(Game).filter(Game.id == id).delete()
     if (games == 1):
         db.session.commit()
-        logging.info("Successful deletion")
+        logging.info(f"Successful deletion - DELETE /games/{id}")
         return jsonify({"message": "Successful deletion"})
     else: 
-        logging.error("Game not found")
+        logging.error(f"Game not found - DELETE /games/{id}")
         return abort(404)
     
 @games.route('/<id>', methods=['PUT'])
@@ -79,10 +79,10 @@ def game_update(id):
         game.name = name
         game.category_id = category_id
         db.session.commit()
-
+        logging.info(f"Successful update - PUT /games/{id}")
         return jsonify({"game": result})
     except ValidationError as e:
-        logging.error("Game update validation error")
+        logging.error(f"Validation error - PUT /games/{id}")
         return jsonify(createValidationErrorMessage(e)), 400
 
 

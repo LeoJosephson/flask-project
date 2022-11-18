@@ -6,6 +6,7 @@ from views.review.api import reviews
 from views.category.api import categories
 from extensions import db, ma
 from flasgger import Swagger
+import logging
 
 from config import DevelopmentConfig
 
@@ -23,5 +24,8 @@ def create_app(config_class=DevelopmentConfig):
     db.init_app(app)
     ma.init_app(app)
     migrate = Migrate(app, db)
+
+    logging_format = '%(asctime)s | %(name)s | %(levelname)s | %(message)s'
+    logging.basicConfig(format=logging_format, level=logging.DEBUG, datefmt='%d-%b-%y %H:%M:%S')
  
     return app

@@ -30,11 +30,13 @@ def create_review():
         db.session.add(new_review)
         db.session.commit()
 
+        logging.info("Review created - POST /reviews")
         return jsonify({
             "message": "new review inserted",
             "review": result
             })
     except ValidationError as e:
+        logging.error("VALIDATION ERROR - POST /reviews")
         return jsonify(createValidationErrorMessage(e)), 400
 
 @reviews.route('/', methods=['GET'])
@@ -77,8 +79,10 @@ def update_review(id):
         review.user_id = review_update.user_id
         db.session.commit()
 
+        logging.info(f"Successful update - PUT /reviews/{id}")
         return jsonify({"review": result})
     except ValidationError as e:
+        logging.error(f"VALIDATION ERROR - PUT /reviews/{id}")
         return jsonify(createValidationErrorMessage(e)), 400
 
 @reviews.route('/<id>', methods=['DELETE'])
@@ -86,10 +90,10 @@ def delete_review_by_id(id):
     reviews = db.session.query(Review).filter(Review.id == id).delete()
     if (reviews == 1):
         db.session.commit()
-        logging.info("Successful deletion")
+        logging.info(f"Successful deletion - DELETE /reviews/{id}")
         return jsonify({"message": "Successful deletion"})
     else: 
-        logging.error("Review not found")
+        logging.error(f"Review not found - DELETE /reviews/{id}")
         return abort(404)
     
 
