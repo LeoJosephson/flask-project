@@ -23,9 +23,23 @@ pip install -r requirements.txt
 ```
 In the config.py file, set the `pg_user` (postgre username), `pg_pwd` (postgre password), `pg_port`(postgre port).
 
-### Create database entities
-make sure you are in the project folder and set the FLASK_APP environment variable -> ```set FLASK_APP=app.py```
+### Create Environment variables
+create a file (.env) in the root of the project with the following variables:
+| Variable name      | Description        | Example        |
+| ------------------ | ------------------ | -------------- |
+| FLASK_APP          | flask application  | project/app.py |
+| POSTGRES_USER      | Postgres username  | "postgres"     |
+| POSTGRES_PASSWORD  | Postgres password  | "password"     |
+| POSTGRES_PORT      | Postgres port      | "5433"         |
+| HOST               | host               | "localhost"    |
+
+
+FLASK_APP variable must be equal to project/app.py  
+
+if running in a docker running add a environment variable DOCKER_HOST="host.docker.internal" in the Dockerfile or in the .env file  
   
+### Create database entities
+make sure you are in the project folder
   
 ```flask shell``` to start flask shell
 ```python
