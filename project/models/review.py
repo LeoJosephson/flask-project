@@ -41,7 +41,7 @@ class ReviewSchema(ma.SQLAlchemySchema):
 
     name = fields.Str(required=True, validate=Length(min=3, max=64))
     description = fields.Str(required=True)
-    playtime = fields.Float(required=True, validade=Range(min=0.1))
+    playtime = fields.Float(required=True, validate=Range(min=0.1))
     rating = fields.Float(required= True, validate=Range(min=0, max=10))
     game_id = fields.Int(required = True)
     user_id = fields.Int(required = True)
