@@ -8,9 +8,7 @@ import os
 
 
 categories = Blueprint('categories', __name__, url_prefix='/categories')
-
 category_schema = CategorySchema()
-path = os.path.realpath(os.path.dirname(__file__))
 
 @categories.route('/', methods=['POST'])
 def create_category():

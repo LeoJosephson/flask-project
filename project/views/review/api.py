@@ -7,10 +7,8 @@ from ..utils import createValidationErrorMessage
 import os
 
 
-
 reviews = Blueprint('reviews', __name__, url_prefix='/reviews')
 review_schema = ReviewSchema()
-path = os.path.realpath(os.path.dirname(__file__))
 
 @reviews.route('/', methods=['POST'])
 def create_review():

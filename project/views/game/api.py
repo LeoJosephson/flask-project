@@ -6,9 +6,8 @@ from models.game import Game, GameSchema
 from extensions import db
 import os
 
-games = Blueprint('games', __name__, url_prefix='/games')
 
-path = os.path.realpath(os.path.dirname(__file__))
+games = Blueprint('games', __name__, url_prefix='/games')
 game_schema = GameSchema()
 
 @games.route('/', methods=['POST'])
