@@ -386,6 +386,43 @@ paths:
 
         400:
           description: Validation error
+    get:
+      summary: Get all users
+      tags:
+        - Users
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              users:
+                type: array
+                items:
+                  $ref: "#definitions/UserView"
+  /users/{userId}:
+    get:
+      summary: Get a user by id
+      tags:
+        - Users
+      parameters:
+
+      - in: path
+        name: userId
+        description: User id.
+        type: integer
+        required: true
+
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              user:
+                $ref: '#definitions/UserView'
+        404:
+          description: User not found
 
 
 
@@ -463,4 +500,14 @@ definitions:
         type: string
         minLength: 7
         maxLength: 50
+  UserView:
+    type: object
+    properties:
+      username:
+        type: string
+        minLength: 1
+        maxLength: 100
+      email:
+        type: string
+        maxLength: 64
 

@@ -40,3 +40,17 @@ class UserSchema(ma.SQLAlchemySchema):
             raise ValidationError("username can't have more than 100 chars")
         elif len(data["username"]) == 0:
             raise ValidationError("username can't be an empty String")
+
+class UserSchemaView(ma.SQLAlchemySchema):
+
+    class Meta:
+        unknown = EXCLUDE
+    username = fields.Str(required=True)
+    email = fields.Email(required=True, validate=Length(max=64))
+
+    @validates_schema
+    def validate_name_length(self, data, **kwargs):
+        if len(data["username"]) > 100:
+            raise ValidationError("username can't have more than 100 chars")
+        elif len(data["username"]) == 0:
+            raise ValidationError("username can't be an empty String")

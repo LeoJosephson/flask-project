@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from models.user import User, UserSchema
+from models.user import User, UserSchema, UserSchemaView
 from extensions import db
 from marshmallow import ValidationError
 from ..utils import createValidationErrorMessage
@@ -7,6 +7,7 @@ import bcrypt
 
 
 users = Blueprint('users', __name__, url_prefix='/users')
+user_schema = UserSchema()
 
 @users.route('/', methods=['POST'])
 def create_user():
@@ -17,7 +18,7 @@ def create_user():
     password = content.get('password')
     new_user = User(username=username, email=email, password=password )
 
-    user_schema = UserSchema()
+
     try:
         user_schema.load(new_user.to_json()) # Validates the input
 
@@ -35,4 +36,21 @@ def create_user():
         msg = createValidationErrorMessage(e)
         return jsonify(msg), 400
 
+@users.route('/', methods=['GET'])
+def get_users():
+    users = db.session.query(User).all()
+    user_schema_m = UserSchemaView(many=True)
 
+    return jsonify({"users":user_schema_m.dump(users)}),200
+
+@users.route('/<id>', methods=['GET'])
+def get_user(id):
+    users = db.session.query(User).filter(User.id == id).first()
+    user_schema_m = UserSchemaView()
+
+    if users != None:
+        return jsonify({"user":user_schema_m.dump(users)}),200
+    else:
+        return abort(404)
+
+    
