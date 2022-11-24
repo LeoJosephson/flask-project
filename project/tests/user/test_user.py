@@ -1,8 +1,11 @@
 from extensions import db
 from models.user import User
+import bcrypt
+import logging
 
 def test_post_user_with_valid_fields(app_with_db):
 
+    password = "password"
     response = app_with_db.post("/users/", json={
         "username": "test",
         "password": "password",
@@ -10,8 +13,7 @@ def test_post_user_with_valid_fields(app_with_db):
     })
 
     user = db.session.query(User).first()
-    assert user != None
-    assert user.password == "password"
+    assert bcrypt.checkpw(password.encode(), user.password.encode())
     assert user.username == "test"
     assert user.email == "email@email.com"
 
