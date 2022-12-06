@@ -1,6 +1,21 @@
 from models.game import Game, Category
+from views.game.api import get_games
+from mock import patch
 from extensions import db
+        
+@patch('flask_sqlalchemy.model._QueryProperty.__get__')
+def test_get_all_games_mock(queryMock):
+    #setup
+    test_game1 = Game(name="mock game1", category_id=1)
+    test_game2 = Game(name="mock game2", category_id=2)
+    queryMock.return_value.all.return_value = [test_game1, test_game2]
 
+    games = get_games()
+    response = games[0].get_json()
+
+    assert response["games"][0]["name"] == test_game1.name
+    assert response["games"][1]["name"] == test_game2.name
+    
 
 def test_post_game_with_invalid_category_id(app_with_data):
     response = app_with_data.post("/games/", json={
