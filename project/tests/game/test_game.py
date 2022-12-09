@@ -1,6 +1,7 @@
 from models.game import Game, Category
-from views.game.api import get_games, get_game_by_id
+from views.game.api import get_games, get_game_by_id, delete_game_by_id
 from mock import patch
+import logging
 from extensions import db
         
 @patch('flask_sqlalchemy.model._QueryProperty.__get__')
@@ -27,6 +28,29 @@ def test_get_game_by_id_mock(queryMock):
 
     assert response["name"] == test_game1.name
     assert response["category_id"] == test_game1.category_id
+
+@patch('flask_sqlalchemy.model._QueryProperty.__get__')
+def test_delete_game_by_id_mock(queryMock):
+
+    test_game1 = Game(name="mock game1", category_id=1)
+    queryMock.return_value.filter.return_value.delete.return_value = 1
+
+    game = delete_game_by_id(1)
+    response = game.get_json()
+
+    assert response["message"] == "Successful deletion"
+
+@patch('flask_sqlalchemy.model._QueryProperty.__get__')
+def test_delete_game_by_id_mock_error(queryMock):
+
+    test_game1 = Game(name="mock game1", category_id=1)
+    queryMock.return_value.filter.return_value.delete.return_value = 0
+
+    game = delete_game_by_id(2)
+    response = game[0].get_json()
+
+    assert response["error"] == "Something went wrong"
+
     
 
 def test_post_game_with_invalid_category_id(app_with_data):

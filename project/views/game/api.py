@@ -53,14 +53,14 @@ def get_game_by_id(id):
 
 @games.route('/<id>', methods=['DELETE'])
 def delete_game_by_id(id):
-    games = db.session.query(Game).filter(Game.id == id).delete()
+    games = Game.query.filter(Game.id == id).delete()
     if (games == 1):
         db.session.commit()
         logging.info(f"Successful deletion - DELETE /games/{id}")
         return jsonify({"message": "Successful deletion"})
     else: 
         logging.error(f"Game not found - DELETE /games/{id}")
-        return abort(404)
+        return jsonify({"error": "Something went wrong"}), 404
     
 @games.route('/<id>', methods=['PUT'])
 def game_update(id):
