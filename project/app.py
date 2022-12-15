@@ -12,6 +12,7 @@ MIGRATION_DIR = os.path.join('project', 'migrations')
 
 def create_app(config_class=configuration.DevelopmentConfig):
     app = Flask(__name__)
+    
     configuration.init_app(app, config_class)
     apidocs.init_app(app)
     views.init_app(app)

@@ -46,7 +46,7 @@ make sure you are in the project folder
   
 ```flask shell``` to start flask shell
 ```python
-from extensions import db
+from extensions.database import db
 from models.category import Category
 from models.game import Game
 from models.user import User
@@ -66,6 +66,7 @@ docker compose up
 ```
 
 ## Run tests
+Need to be in the project folder
 ```
 python -m pytest
 ```
