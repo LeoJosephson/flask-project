@@ -1,7 +1,7 @@
 import pytest
 
 from app import create_app
-from extensions import db
+from extensions.database import db
 from models.category import Category
 from models.game import Game
 from models.user import User

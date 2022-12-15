@@ -1,4 +1,5 @@
-from extensions import db, ma
+from extensions.database import db
+from extensions.schema import ma
 from marshmallow import fields, validates_schema, ValidationError, EXCLUDE
 
 class Category(db.Model):

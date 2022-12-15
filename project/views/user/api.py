@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from models.user import User, UserSchema, UserSchemaView
-from extensions import db
+from extensions.database import db
 from marshmallow import ValidationError
 from ..utils import createValidationErrorMessage
 import bcrypt

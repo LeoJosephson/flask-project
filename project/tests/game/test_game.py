@@ -2,7 +2,7 @@ from models.game import Game, Category
 from views.game.api import get_games, get_game_by_id, delete_game_by_id
 from mock import patch
 import logging
-from extensions import db
+from extensions.database import db
         
 @patch('flask_sqlalchemy.model._QueryProperty.__get__')
 def test_get_all_games_mock(queryMock):

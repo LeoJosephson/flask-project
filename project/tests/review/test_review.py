@@ -1,7 +1,7 @@
 from models.game import Game
 from models.user import User
 from models.review import Review
-from extensions import db
+from extensions.database import db
 
 
 

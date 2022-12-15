@@ -3,7 +3,7 @@ from marshmallow import ValidationError
 from ..utils import createValidationErrorMessage
 import logging
 from models.game import Game, GameSchema
-from extensions import db
+from extensions.database import db
 import os
 
 

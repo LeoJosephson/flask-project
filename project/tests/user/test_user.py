@@ -1,4 +1,4 @@
-from extensions import db
+from extensions.database import db
 from models.user import User
 import bcrypt
 import logging

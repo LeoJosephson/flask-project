@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request, Response, abort
 import logging
 from marshmallow import ValidationError
 from models.review import ReviewSchema, Review
-from extensions import db
+from extensions.database import db
 from ..utils import createValidationErrorMessage
 import os
 

@@ -1,5 +1,5 @@
 from models.category import Category
-from extensions import db
+from extensions.database import db
 
 def test_post_category_with_valid_fields(app_with_data):
     name = "test_post_category"
