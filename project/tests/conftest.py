@@ -7,11 +7,11 @@ from models.game import Game
 from models.user import User
 from models.review import Review
 from sqlalchemy import delete
-from config import TestingConfig
+from extensions import configuration
 
 @pytest.fixture(scope="session")
 def flask_app():
-    app = create_app(TestingConfig)
+    app = create_app(configuration.TestingConfig)
 
     client =app.test_client()
 

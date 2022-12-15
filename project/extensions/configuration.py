@@ -1,5 +1,9 @@
 from dotenv import load_dotenv
 import os
+import logging
+
+logging_format = '%(asctime)s | %(name)s | %(levelname)s | %(message)s'
+logging.basicConfig(format=logging_format, level=logging.DEBUG, datefmt='%d-%b-%y %H:%M:%S')
 
 load_dotenv()
 pg_user = os.environ['POSTGRES_USER']
@@ -29,4 +33,7 @@ class TestingConfig(Config):
     SQLALCHEMY_DATABASE_URI = TESTING_DB_URL
     DEBUG = True
     TESTING = True
+
+def init_app(app, config_class):
+    app.config.from_object(config_class)
 

@@ -1,24 +1,18 @@
 from flask import Flask
 from flask_migrate import Migrate
-import logging
 import os
 
 import views
 from extensions import database
 from extensions import schema
 from extensions import apidocs
-from config import DevelopmentConfig
+from extensions import configuration
 
-logging_format = '%(asctime)s | %(name)s | %(levelname)s | %(message)s'
-logging.basicConfig(format=logging_format, level=logging.DEBUG, datefmt='%d-%b-%y %H:%M:%S')
 MIGRATION_DIR = os.path.join('project', 'migrations')
 
-def create_app(config_class=DevelopmentConfig):
-
+def create_app(config_class=configuration.DevelopmentConfig):
     app = Flask(__name__)
-    
-    app.config.from_object(config_class)
-
+    configuration.init_app(app, config_class)
     apidocs.init_app(app)
     views.init_app(app)
     database.init_app(app)
