@@ -1,12 +1,10 @@
 from models.game import Game, Category
 from views.game.api import get_games, get_game_by_id, delete_game_by_id
-from mock import patch
-import logging
+from unittest.mock import patch
 from extensions.database import db
         
 @patch('flask_sqlalchemy.model._QueryProperty.__get__')
 def test_get_all_games_mock(queryMock):
-    #setup
     test_game1 = Game(name="mock game1", category_id=1)
     test_game2 = Game(name="mock game2", category_id=2)
     queryMock.return_value.all.return_value = [test_game1, test_game2]
@@ -14,6 +12,8 @@ def test_get_all_games_mock(queryMock):
     games = get_games()
     response = games[0].get_json()
 
+
+    assert len(response["games"]) == 2
     assert response["games"][0]["name"] == test_game1.name
     assert response["games"][1]["name"] == test_game2.name
 
@@ -32,7 +32,6 @@ def test_get_game_by_id_mock(queryMock):
 @patch('flask_sqlalchemy.model._QueryProperty.__get__')
 def test_delete_game_by_id_mock(queryMock):
 
-    test_game1 = Game(name="mock game1", category_id=1)
     queryMock.return_value.filter.return_value.delete.return_value = 1
 
     game = delete_game_by_id(1)
@@ -43,7 +42,6 @@ def test_delete_game_by_id_mock(queryMock):
 @patch('flask_sqlalchemy.model._QueryProperty.__get__')
 def test_delete_game_by_id_mock_error(queryMock):
 
-    test_game1 = Game(name="mock game1", category_id=1)
     queryMock.return_value.filter.return_value.delete.return_value = 0
 
     game = delete_game_by_id(2)
