@@ -20,7 +20,7 @@ def create_game():
     new_game = Game(name=name, category_id=category_id)
 
     try:
-        game_schema.load(new_game.to_json()) # Validates the input
+        result = game_schema.load(new_game.to_json()) # Validates the input
 
         db.session.add(new_game)
         db.session.commit()
@@ -28,7 +28,7 @@ def create_game():
         logging.info("Game created - POST /games")
         return jsonify({
             "message": "new game inserted",
-            "game": game_schema.dump(new_game)
+            "game": result
             }),200
     except ValidationError as e:
         logging.error("VALIDATION ERROR - POST /games")
@@ -71,7 +71,7 @@ def game_update(id):
     name = content.get("name", game.name)
     category_id = content.get("category_id", game.category_id)
     try:
-        result = game_schema.load(
+        response = game_schema.load(
             {"name": name,
             "category_id": category_id}
         )
@@ -79,7 +79,7 @@ def game_update(id):
         game.category_id = category_id
         db.session.commit()
         logging.info(f"Successful update - PUT /games/{id}")
-        return jsonify({"game": result})
+        return jsonify({"game": response})
     except ValidationError as e:
         logging.error(f"Validation error - PUT /games/{id}")
         return jsonify(createValidationErrorMessage(e)), 400

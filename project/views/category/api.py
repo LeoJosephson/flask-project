@@ -20,7 +20,7 @@ def create_category():
     )
 
     try:
-        category_schema.load(new_category.to_json()) # Validates the input
+        response = category_schema.load(new_category.to_json()) # Validates the input
 
         db.session.add(new_category)
         db.session.commit()
@@ -28,7 +28,7 @@ def create_category():
         logging.error("Category created - POST /categories")
         return jsonify({
             "message": "new category inserted",
-            "category": category_schema.dump(new_category)
+            "category": response
             }, 200)
     except ValidationError as e:
         logging.error("VALIDATION ERROR - POST /categories")
