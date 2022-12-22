@@ -1,6 +1,6 @@
 # Flask api project for a Game Api  
 
-This application uses [Flask](https://flask.palletsprojects.com) and [PostgreSQL](https://www.postgresql.org/), [Swagger](https://swagger.io/) for api documentation using [Flasgger](https://github.com/flasgger/flasgger) and [Pytest](https://docs.pytest.org/) and [Pytest-cov](https://pytest-cov.readthedocs.io/) for testing.
+This application uses [Flask](https://flask.palletsprojects.com) and [PostgreSQL](https://www.postgresql.org/), [Swagger](https://swagger.io/) for api documentation using [Flasgger](https://github.com/flasgger/flasgger) and [Pytest](https://docs.pytest.org/) for testing.
 
 ### Models
 1. Game
@@ -71,7 +71,7 @@ Need to be in the project folder
 python -m pytest
 ```
   
-### Create Html report for test coverage
+### Generate Html report for test coverage
 ```
 python -m pytest --cov-report html --cov
 ```
